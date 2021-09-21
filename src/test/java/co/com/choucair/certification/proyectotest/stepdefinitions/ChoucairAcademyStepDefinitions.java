@@ -1,5 +1,7 @@
 package co.com.choucair.certification.proyectotest.stepdefinitions;
 
+import co.com.choucair.certification.proyectotest.model.AcademyChoucairData;
+import co.com.choucair.certification.proyectotest.questions.Answer;
 import co.com.choucair.certification.proyectotest.tasks.OpenUp;
 import co.com.choucair.certification.proyectotest.tasks.RegisterUser;
 import cucumber.api.java.Before;
@@ -19,21 +21,30 @@ public class ChoucairAcademyStepDefinitions {
 
 
     @Given("^that Pedro wants register on the page Utest\\.com$")
-    public void thatPedroWantsRegisterOnThePageUtestCom() {
-        OnStage.theActorCalled("Pedro").wasAbleTo(OpenUp.thePage(),(RegisterUser.onThePage(academyChoucairData.get(0).getStrUser(),academyChoucairData.get(0).getStrPassword())));
+   public void thatPedroWantsRegisterOnThePageUtestCom() {
+        OnStage.theActorCalled("Pedro").wasAbleTo(OpenUp.thePage());
     }
 
-    @When("^he enters the requested data$")
-    public void heEntersTheRequestedData() {
-        OnStage.theActorInTheSpotlight().attemptsTo(Search.the(academyChoucairData.get(0).getStrCourse()));
-
+    @When("^he fills out the form$")
+    public void heFillsOutTheForm(List<AcademyChoucairData> academyChoucairData) {
+        OnStage.theActorInTheSpotlight().attemptsTo(RegisterUser.the(
+                academyChoucairData.get(0).getStrFirstName(),
+                academyChoucairData.get(0).getStrLastName(),
+                academyChoucairData.get(0).getStrEmail(),
+                academyChoucairData.get(0).getStrMonth(),
+                academyChoucairData.get(0).getStrDay(),
+                academyChoucairData.get(0).getStrYear(),
+                academyChoucairData.get(0).getStrPassword(),
+                academyChoucairData.get(0).getStrConfirmPassword(),
+                academyChoucairData.get(0).getBooTerms(),
+                academyChoucairData.get(0).getBooPolicy()
+                ));
     }
 
     @Then("^he can enter the page$")
-    public void heCanEnterThePage() {
-        OnStage.theActorInTheSpotlight().should(GivenWhenThen.seeThat(Answer.toThe(academyChoucairData.get(0).getStrCourse())));
+    public void heCanEnterThePage(List<AcademyChoucairData> academyChoucairData)throws Exception {
+        OnStage.theActorInTheSpotlight().should(GivenWhenThen.seeThat(Answer.toThe(academyChoucairData.get(0).getStrfinalRegistration())));
 
     }
-
 
 }
